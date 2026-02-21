@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 function DarkModeToggle() {
   const [dark, setDark] = useState(false)
@@ -30,11 +31,19 @@ function DarkModeToggle() {
   )
 }
 
-const features = [
+interface Feature {
+  title: string
+  description: string
+  icon: string
+  href?: string
+}
+
+const features: Feature[] = [
   {
     title: 'Quick Add Tasks',
     description: 'Create and manage tasks with a simple, intuitive interface. No signup required.',
     icon: '⚡',
+    href: '/tasks',
   },
   {
     title: 'Organize Notes',
@@ -72,28 +81,48 @@ export default function Home() {
           A minimal sandbox app for testing the feedback-chat pipeline end-to-end.
           Try the feedback widget in the bottom-right corner.
         </p>
-        <a
-          href="#features"
-          className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-lg transition-colors shadow-lg shadow-blue-600/25"
-        >
-          Explore Features
-        </a>
+        <div className="flex gap-4">
+          <Link
+            href="/tasks"
+            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-lg transition-colors shadow-lg shadow-blue-600/25"
+          >
+            Try Task Manager
+          </Link>
+          <a
+            href="#features"
+            className="px-8 py-3 border border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-400 text-gray-700 dark:text-gray-300 rounded-lg font-medium text-lg transition-colors"
+          >
+            Explore Features
+          </a>
+        </div>
       </section>
 
       {/* Features */}
       <section id="features" className="px-6 py-20 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12">What you can do</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature) => (
-            <div
-              key={feature.title}
-              className="p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
-            >
-              <div className="text-3xl mb-4">{feature.icon}</div>
-              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">{feature.description}</p>
-            </div>
-          ))}
+          {features.map((feature) => {
+            const card = (
+              <div
+                key={feature.title}
+                className={`p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 hover:border-blue-400 dark:hover:border-blue-500 transition-colors ${feature.href ? 'cursor-pointer' : ''}`}
+              >
+                <div className="text-3xl mb-4">{feature.icon}</div>
+                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">{feature.description}</p>
+                {feature.href && (
+                  <span className="inline-block mt-3 text-sm text-blue-600 dark:text-blue-400 font-medium">
+                    Try it &rarr;
+                  </span>
+                )}
+              </div>
+            )
+            return feature.href ? (
+              <Link key={feature.title} href={feature.href}>{card}</Link>
+            ) : (
+              card
+            )
+          })}
         </div>
       </section>
 
