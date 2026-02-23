@@ -1,0 +1,33 @@
+/* CSS Variables for future theming */
+:root {
+  --text-primary: #111111;
+  --text-secondary: #555555;
+  --bg-primary: #ffffff;
+}
+
+/* Base typography and layout */
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  max-width: 600px;
+  margin-inline: auto;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+/* Page-level semantic classes */
+.page-heading {
+  /* Inherits body font and color */
+}
+
+.page-description {
+  /* Inherits body font and color */
+}
+
+/* Footer: #555555 provides ~7.5:1 contrast on white (WCAG AAA ≥7:1) */
+.page-footer {
+  margin-top: 2rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
