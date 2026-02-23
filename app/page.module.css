@@ -1,0 +1,5 @@
+.footer {
+  margin-top: 2rem;
+  color: #444;
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+}

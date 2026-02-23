@@ -1,0 +1,14 @@
+.layoutBody {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+@media (max-width: 640px) {
+  .layoutBody {
+    max-width: 100%;
+    padding: 16px;
+  }
+}
