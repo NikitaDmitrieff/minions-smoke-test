@@ -11,6 +11,7 @@ interface ContrastCheckerProps {
 
 interface WcagResult {
   label: string
+  level: string
   threshold: number
   pass: boolean
 }
@@ -28,14 +29,20 @@ export function ContrastChecker({ colors }: ContrastCheckerProps) {
   const ratio = parseFloat(contrastRatio(fgHex, bgHex))
 
   const results: WcagResult[] = [
-    { label: 'AA Normal Text (4.5:1)', threshold: 4.5, pass: ratio >= 4.5 },
-    { label: 'AA Large Text (3:1)', threshold: 3.0, pass: ratio >= 3.0 },
-    { label: 'AAA Normal Text (7:1)', threshold: 7.0, pass: ratio >= 7.0 },
-    { label: 'AAA Large Text (4.5:1)', threshold: 4.5, pass: ratio >= 4.5 },
+    { label: 'Normal Text', level: 'AA', threshold: 4.5, pass: ratio >= 4.5 },
+    { label: 'Large Text', level: 'AA', threshold: 3.0, pass: ratio >= 3.0 },
+    { label: 'Normal Text', level: 'AAA', threshold: 7.0, pass: ratio >= 7.0 },
+    { label: 'Large Text', level: 'AAA', threshold: 4.5, pass: ratio >= 4.5 },
   ]
 
   return (
     <div className={styles.checker}>
+      <style>{`
+        [data-contrast-preview]{--preview-bg:${bgHex};--preview-fg:${fgHex};}
+        [data-fg-preview]{--preview-color:${fgHex};}
+        [data-bg-preview]{--preview-color:${bgHex};}
+      `}</style>
+
       <div className={styles.controls}>
         <div className={styles.colorPicker}>
           <label className={styles.label} htmlFor="fg-color">Foreground color</label>
@@ -51,7 +58,7 @@ export function ContrastChecker({ colors }: ContrastCheckerProps) {
               </option>
             ))}
           </select>
-          <div className={styles.colorPreview} style={{ '--preview-color': fgHex } as React.CSSProperties} aria-hidden="true" />
+          <div className={styles.colorPreview} data-fg-preview aria-label="Foreground color preview" />
         </div>
 
         <div className={styles.colorPicker}>
@@ -68,11 +75,11 @@ export function ContrastChecker({ colors }: ContrastCheckerProps) {
               </option>
             ))}
           </select>
-          <div className={styles.colorPreview} style={{ '--preview-color': bgHex } as React.CSSProperties} aria-hidden="true" />
+          <div className={styles.colorPreview} data-bg-preview aria-label="Background color preview" />
         </div>
       </div>
 
-      <div className={styles.preview} style={{ '--preview-bg': bgHex, '--preview-fg': fgHex } as React.CSSProperties}>
+      <div className={styles.preview} data-contrast-preview>
         <p className={styles.previewText}>Aa — Sample text preview</p>
         <p className={styles.previewSmall}>Normal body text at 16px</p>
       </div>
@@ -84,9 +91,11 @@ export function ContrastChecker({ colors }: ContrastCheckerProps) {
 
       <div className={styles.results}>
         {results.map((r) => (
-          <div key={r.label} className={r.pass ? styles.resultPass : styles.resultFail}>
+          <div key={`${r.level}-${r.label}`} className={r.pass ? styles.resultPass : styles.resultFail}>
             <span className={styles.resultBadge}>{r.pass ? '✓ Pass' : '✗ Fail'}</span>
             <span className={styles.resultLabel}>{r.label}</span>
+            <span className={styles.resultRatio}>{ratio.toFixed(2)}:1</span>
+            <span className={styles.resultLevel}>{r.level}</span>
           </div>
         ))}
       </div>

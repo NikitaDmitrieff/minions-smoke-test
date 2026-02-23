@@ -123,3 +123,15 @@
 .resultLabel {
   color: inherit;
 }
+
+.resultRatio {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  margin-left: auto;
+}
+
+.resultLevel {
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+}

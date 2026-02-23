@@ -15,13 +15,12 @@ export function ColorSwatch({ swatch }: ColorSwatchProps) {
   const onWhite = contrastRatio(swatch.hex, '#ffffff')
   const onBlack = contrastRatio(swatch.hex, '#000000')
   const textColor = parseFloat(onWhite) >= 4.5 ? '#ffffff' : '#111827'
+  const colorClass = `sw-${swatch.hex.replace('#', '')}`
 
   return (
     <div className={styles.swatch}>
-      <div
-        className={styles.swatchColor}
-        style={{ '--swatch-bg': swatch.hex, '--swatch-text': textColor } as React.CSSProperties}
-      >
+      <style>{`.${colorClass}{--swatch-bg:${swatch.hex};--swatch-text:${textColor};}`}</style>
+      <div className={`${styles.swatchColor} ${colorClass}`}>
         {swatch.name}
       </div>
       <div className={styles.swatchMeta}>
