@@ -1,4 +1,7 @@
-export default function Home() {
+import type { Metadata } from 'next'
+import React from 'react'
+
+const Home: React.FC = () => {
   return (
     <main>
       <h1>Minions Smoke Test</h1>
@@ -15,3 +18,5 @@ export default function Home() {
     </main>
   )
 }
+
+export default Home
