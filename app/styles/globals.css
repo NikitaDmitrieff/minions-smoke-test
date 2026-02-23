@@ -4,9 +4,9 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Theme Transitions — smooth token-driven property changes
+   Theme Transitions — applied only during active theme changes via JS class
    -------------------------------------------------------------------------- */
-:root * {
+.theme-transitioning * {
   transition: color 200ms, background 200ms, border-color 200ms;
 }
 

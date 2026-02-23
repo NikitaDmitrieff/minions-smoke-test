@@ -177,10 +177,12 @@ function SliderRow({ label, value, min, max, unit = '', trackGradient, onChange 
 }
 
 function applyTokensToDOM(t: TokenValues) {
+  document.documentElement.classList.add('theme-transitioning')
   TOKEN_GROUPS.forEach(({ key, cssVar }) => {
     const [h, s, l] = t[key]
     document.documentElement.style.setProperty(cssVar, hslStr(h, s, l))
   })
+  setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 220)
 }
 
 export function ThemeCustomizer() {
@@ -202,12 +204,11 @@ export function ThemeCustomizer() {
   }, [])
 
   const updateToken = useCallback((key: TokenKey, hsl: [number, number, number]) => {
-    setTokens((prev) => {
-      const next = { ...prev, [key]: hsl }
-      const group = TOKEN_GROUPS.find((g) => g.key === key)!
-      document.documentElement.style.setProperty(group.cssVar, hslStr(...hsl))
-      return next
-    })
+    const group = TOKEN_GROUPS.find((g) => g.key === key)!
+    document.documentElement.classList.add('theme-transitioning')
+    document.documentElement.style.setProperty(group.cssVar, hslStr(...hsl))
+    setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 220)
+    setTokens((prev) => ({ ...prev, [key]: hsl }))
   }, [])
 
   const applyPreset = useCallback((preset: (typeof THEME_PRESETS)[0]) => {
@@ -351,11 +352,16 @@ export function ThemeCustomizer() {
             {TOKEN_GROUPS.map((group) => {
               const [h, s, l] = tokens[group.key]
               const hex = hslToHex(h, s, l)
-              const contrastAgainst =
-                group.key === 'surface'
-                  ? hslToHex(...tokens.text)
-                  : hslToHex(...tokens.surface)
-              const ratio = parseFloat(contrastRatio(hex, contrastAgainst))
+              let ratio = 1
+              try {
+                const contrastAgainst =
+                  group.key === 'surface'
+                    ? hslToHex(...tokens.text)
+                    : hslToHex(...tokens.surface)
+                ratio = parseFloat(contrastRatio(hex, contrastAgainst))
+              } catch {
+                // fallback ratio if contrast calculation fails
+              }
               const badge = wcagBadge(ratio)
 
               return (
