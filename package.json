@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "next": "^15.3.3",
@@ -14,8 +15,15 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.15.0",
     "@types/react": "^19.1.0",
-    "typescript": "^5.8.0"
+    "eslint": "^9.39.3",
+    "eslint-config-next": "^15.5.12",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "typescript": "5.9.3"
   }
 }
