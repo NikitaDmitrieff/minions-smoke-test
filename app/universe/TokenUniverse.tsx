@@ -277,7 +277,10 @@ export function TokenUniverse() {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    if (!ctx) {
+      console.error('[TokenUniverse] Failed to get 2D canvas context — canvas may be unsupported in this environment.')
+      return
+    }
 
     function loop() {
       const W = canvas!.width
